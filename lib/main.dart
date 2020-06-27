@@ -9,19 +9,20 @@ void main() {
 }
 
 const months = <DropdownMenuItem<String>>[
-  const DropdownMenuItem<String>(value: "date >= '2019-01-01'", child: const Text("All")),
-  const DropdownMenuItem<String>(value: "date >= '2020-01-01' AND date < '2020-02-01'", child: const Text("January")),
-  const DropdownMenuItem<String>(value: "date >= '2020-02-01' AND date < '2020-03-01'", child: const Text("February")),
-  const DropdownMenuItem<String>(value: "date >= '2020-03-01' AND date < '2020-04-01'", child: const Text("March")),
-  const DropdownMenuItem<String>(value: "date >= '2020-04-01' AND date < '2020-05-01'", child: const Text("April")),
-  const DropdownMenuItem<String>(value: "date >= '2020-05-01' AND date < '2020-06-01'", child: const Text("May")),
-  const DropdownMenuItem<String>(value: "date >= '2020-06-01' AND date < '2020-07-01'", child: const Text("June")),
-  const DropdownMenuItem<String>(value: "date >= '2020-07-01' AND date < '2020-08-01'", child: const Text("July")),
-  const DropdownMenuItem<String>(value: "date >= '2020-08-01' AND date < '2020-09-01'", child: const Text("August")),
-  const DropdownMenuItem<String>(value: "date >= '2020-09-01' AND date < '2020-10-01'", child: const Text("September")),
-  const DropdownMenuItem<String>(value: "date >= '2020-10-01' AND date < '2020-11-01'", child: const Text("October")),
-  const DropdownMenuItem<String>(value: "date >= '2020-11-01' AND date < '2020-12-01'", child: const Text("November")),
-  const DropdownMenuItem<String>(value: "date >= '2020-12-01' AND date < '2021-01-01'", child: const Text("December"))
+  const DropdownMenuItem<String>(value: "", child: const Text("All")),
+
+  const DropdownMenuItem<String>(value: "01-01 02-01", child: const Text("January")),
+  const DropdownMenuItem<String>(value: "02-01 03-01", child: const Text("February")),
+  const DropdownMenuItem<String>(value: "03-01 04-01", child: const Text("March")),
+  const DropdownMenuItem<String>(value: "04-01 05-01", child: const Text("April")),
+  const DropdownMenuItem<String>(value: "05-01 06-01", child: const Text("May")),
+  const DropdownMenuItem<String>(value: "06-01 07-01", child: const Text("June")),
+  const DropdownMenuItem<String>(value: "07-01 08-01", child: const Text("July")),
+  const DropdownMenuItem<String>(value: "08-01 09-01", child: const Text("August")),
+  const DropdownMenuItem<String>(value: "09-01 10-01", child: const Text("September")),
+  const DropdownMenuItem<String>(value: "10-01 11-01", child: const Text("October")),
+  const DropdownMenuItem<String>(value: "11-01 12-01", child: const Text("November")),
+  const DropdownMenuItem<String>(value: "12-01 01-01", child: const Text("December"))
 ];
 
 class MyApp extends StatelessWidget {
@@ -47,7 +48,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePage extends State<MyHomePage> {
-  String selMonth = "All";
+  String selMonth = "";
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,19 @@ class _MyHomePage extends State<MyHomePage> {
                       items: months,
                       onChanged: (String value) {
                         selMonth = value;
-                        model.Load(value: " WHERE " + value);
+                        var where;
+
+
+
+                        if (selMonth == "") {
+                          where = "";
+                        }
+                        else{
+                          var vae = value.split(" ");
+                           where = " WHERE date >= '"  + DateTime.now().year.toString() + "-" + vae[0] + "' AND date < '"+   (vae[0] == "12-01" ?  (DateTime.now().year+1).toString() +"-"+ vae[1]+ "'" : DateTime.now().year.toString()+ "-"+ vae[1]+ "'") ;
+                        }
+                        print(where);
+                        model.Load(value: where);
                       },
 
 //
